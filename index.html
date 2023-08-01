@@ -1,0 +1,112 @@
+<html>
+	<head>
+		<title> Pong </title>
+		<script src="https://simplycodingcourses.com/files/simplyjs/simply.js"></script>
+		<script>
+			function start(){
+				sjs.open("target",750,400);
+
+				var score = 0;
+
+				var collision = new sjs.Image("Images/gray.png");
+				collision.type = "collision";
+				
+				var blood = new sjs.Image("Images/bestblood.gif");
+				blood.type = "blood";
+
+				var ball = new sjs.Image("Images/bluray.png");
+				ball.type = "ball";
+				ball.setSize(50,40);
+				ball.center();
+				ball.friction = 0;
+				ball.bounce();
+				ball.pushRight(3);
+				ball.pushUp(4);
+				
+				//Paddle
+				var paddle1 = new sjs.Image("Images/paddle.png");
+				paddle1.type = "paddle";
+				paddle1.center().bottom();
+				paddle1.setSize(150,20);
+				
+				sjs.keyDown(LEFT_KEY, function(){
+					paddle1.pushLeft(0.5);		
+				});
+
+				sjs.keyDown(RIGHT_KEY, function(){
+					paddle1.pushRight(0.5);	
+				});
+
+				sjs.keyDown(UP_KEY, function(){
+					paddle1.pushUp(0.5);	
+				});
+
+				sjs.keyDown(DOWN_KEY, function(){
+					paddle1.pushDown(0.5);	
+				});
+
+				sjs.onHit("ball","paddle", function(ball,paddle){
+					sjs.bounceOff(ball,paddle);
+				});
+
+				console.log(document.images);
+
+				sjs.onHit("ball","collision", function(ball,collision){
+					ball.destroy();
+					if (document.images.length <= 3) {
+						score = score + 1;
+						for(let i=0; i <= score; i++) {
+							var ball = new sjs.Image("Images/bluray.png");
+							ball.type = "ball";
+							ball.setSize(50,40);
+							ball.center();
+							ball.friction = 0;
+							ball.bounce();
+							ball.pushRight(Math.random()*10);
+							ball.pushLeft(Math.random()*10);
+							ball.pushUp(Math.random()*10);
+							ball.pushDown(Math.random()*10);
+							console.log(score);
+						};
+					
+						if (score == 3) {
+							var ball = new sjs.Image("Images/dvd.png");
+							ball.type = "ball";
+							ball.setSize(100,80);
+							ball.center();
+							ball.friction = 0;
+							ball.bounce();
+							ball.pushRight(Math.random()*10);
+							ball.pushLeft(Math.random()*5);
+							ball.pushUp(Math.random()*5);
+							ball.pushDown(Math.random()*10);
+						}
+					};
+				});
+				
+				//var toggle = true;
+				setInterval(function() {
+					//if (toggle == true){
+						var glitch = new sjs.Image("Images/boom.gif");
+						glitch.moveTo(Math.random()*1000,Math.random()*1000);
+						glitch.setSize(Math.random()*100,Math.random()*100);
+						//toggle = false;
+					//}
+					setTimeout(function(){
+						glitch.destroy();
+					},Math.random()*1000);
+					//toggle = true;
+				}, Math.random()*10000);
+				
+				alert("Arrow keys to move!");
+			}
+		</script>
+	</head>
+	<body onload= "start()">
+		<h1> The BlueRay Battle </h1>
+		<div style="width:750px;height:80px;margin:auto;background:black;"></div>
+		<div id="target" style="margin:auto;background:rgb(48, 48, 48);"></div>
+		<div style="width:750px;height:80px;margin:auto;background:black;"></div>
+
+	</body>
+</html>
